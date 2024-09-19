@@ -25,6 +25,30 @@ const createArticle = (req, res) => {
     })
 }
 
+    const updateArticle = (req, res) => {
+    const updatedArticleId = req.params.id;
+
+    models.Article.findByPk(updatedArticleId, updateArticle)
+
+    models.Article.findByPk(updatedArticleId, {
+        name: req.body.name,
+        slug: req.body.slug,
+        image: req.body.image,
+        body: req.body.body,
+        published: new Date().toISOString().slice(0, 19).replace('T',  
+     ' '),
+    })
+
+    .then(articles => {
+        console.log(articles)
+        return res.status(200).json({message: "Article has been updated"});
+    })
+    .catch (error => {
+        return res.status(500).send(error.message);
+    })
+}
+
 module.exports = {
     createArticle,
+    updateArticle
 }
