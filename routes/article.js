@@ -10,4 +10,6 @@ router.post('/admin/article/create', articleAdminController.createArticle)
 
 router.post('/admin/article/edit/:id', articleAdminController.updateArticle)
 
+router.post('/admin/article/delete/:id', articleAdminController.deleteArticle);
+
 module.exports = router;
