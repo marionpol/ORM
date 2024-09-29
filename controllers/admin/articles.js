@@ -1,7 +1,31 @@
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize('mysql://root:qwerty@localhost:3306/orm');
 
-const models = require('../../models')
+const models = require('../../models');
+
+    const getAllArticles = (req, res) =>{
+        models.Article.findAll()
+        .then(articles => {
+            return res.status(200).render('admin', {articles});
+        })
+        .catch (error => {
+            return res.status(500).send(error.message);
+        })
+        
+    }
+
+    const getArticleById = (req, res) => {
+        
+        models.Article.findByPk(req.params.id)
+        .then(articles => {
+            return res.status(200).render('edit', {articles})
+        })
+        .catch (error => {
+            return res.status(500).send(error.message);
+        })
+        
+    }
+
 
 const createArticle = (req, res) => {
     let name = req.body.name
@@ -70,5 +94,7 @@ const createArticle = (req, res) => {
 module.exports = {
     createArticle,
     updateArticle,
-    deleteArticle
+    deleteArticle,
+    getAllArticles,
+    getArticleById
 }

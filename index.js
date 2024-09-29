@@ -1,11 +1,39 @@
 const express = require("express");
 const app = express();
+const sessions = require('express-session');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+
+
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize('mysql://root:qwerty@localhost:3306/orm');
+
+const path = require('path')
+
+const hbs = require('express-handlebars','hbs');
+const handlebars = require('handlebars');
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'hbs');
+app.engine('hbs', hbs.engine({
+    extname: 'hbs',
+    defaultLayout: 'main',
+    layoutsDir: __dirname + '/views/layouts/',
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true, 
+        allowProtoMethodsByDefault: true,    
+    }
+}))
+app.use(express.static('public'));
+
+
+app.use(sessions({
+    secret: "thisismysecretkey",
+    saveUninitialized: true,
+    cookie: {maxAge: 1000 * 60 * 60 * 24},
+    resave: false
+}))
 
 sequelize
     .authenticate()
